@@ -1,0 +1,27 @@
+{
+    "@@locale": "en",
+    "title": "Url Shortener",
+    "@title": {
+        "description": "Title of the application"
+    },
+    "urlPrompt": "Enter a URL to shorten.",
+    "@urlPrompt": {
+        "description": "Text shown as the hint of the TextField of the UrlShortenerPage"
+    },
+    "urlRequired": "Please enter a URL",
+    "@urlRequired": {
+        "description": "Error message shown when the a form is submitted without a URL"
+    },
+    "recentUrlTitle": "Recent URLs",
+    "@recentUrlTitle": {
+        "description": "Title of the RecentUrlsPage"
+    },
+    "emptyRecentList": "No recently shortened URLs.",
+    "@emptyRecentList": {
+        "description": "Shown when the recent urls list is empty"
+    },
+    "unexpectedErrorText": "An unexpected error occurred.",
+    "@unexpectedErrorText": {
+        "description": "Error message shown when an unexpected error occurs"
+    }
+}
