@@ -17,8 +17,10 @@ void main() {
     late MockUrlShortenerCubit _cubit;
     setUp(() {
       _cubit = MockUrlShortenerCubit();
-      when(() => _cubit.state).thenReturn(UrlShortenerState.idle());
-      when(() => _cubit.shortenUrl(any())).thenAnswer((_) async {});
+      when(() => _cubit.state).thenReturn(
+        UrlShortenerState.idle(recents: Stack()),
+      );
+      when(() => _cubit.urlShortened(any())).thenAnswer((_) async {});
     });
 
     test('instantiates', () {
@@ -38,7 +40,7 @@ void main() {
 
     testWidgets('Show empty message when the recents is empty', (tester) async {
       when(() => _cubit.state).thenReturn(
-        UrlShortenerState.success(recents: Stack<UrlModel>()),
+        UrlShortenerState.idle(recents: Stack<UrlModel>.of(const [])),
       );
       await tester.pumpAppWithDependencies(
         const RecentUrlList(),

@@ -12,8 +12,8 @@ void main() {
     late ShortenedUrl _shortenedUrlModel;
     late UrlShortenerRepository _repository;
     const _aliasId = 'valid-alias-id';
-    const _originalUrl = 'https://www.google.com';
-    const _shortUrl = 'https://www.google.com';
+    const _originalUrl = 'https://www.test.com';
+    const _shortUrl = 'https://www.test.com';
 
     setUp(() {
       _urlShortenerApi = MockUrlShortenerApi();

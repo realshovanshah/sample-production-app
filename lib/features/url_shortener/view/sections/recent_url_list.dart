@@ -16,46 +16,35 @@ class RecentUrlList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            l10n.recentUrlTitle,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        BlocBuilder<UrlShortenerCubit, UrlShortenerState>(
-          builder: (context, state) {
-            if (state.recents.isEmpty) {
-              return Center(child: Text(l10n.emptyRecentList));
-            }
-            return ListView.separated(
-              shrinkWrap: true,
-              itemCount: state.recents.length,
-              itemBuilder: (context, index) {
-                return state.recents
-                    .map(
-                      (url) => RecentUrlTile(
-                        originalUrl: url.original,
-                        shortUrl: url.shortened,
-                      ),
-                    )
-                    .elementAt(index);
-              },
-              separatorBuilder: (context, index) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Divider(thickness: 1),
-                );
-              },
-            );
-            // return ListView(shrinkWrap: true);
+    return BlocBuilder<UrlShortenerCubit, UrlShortenerState>(
+      builder: (context, state) {
+        if (state.recents.isEmpty) {
+          return Center(child: Text(l10n.emptyRecentList));
+        }
+        return ListView.separated(
+          shrinkWrap: true,
+          reverse: true,
+          itemCount: state.recents.length,
+          itemBuilder: (context, index) {
+            final reverseIndex = state.recents.length - index - 1;
+            return state.recents
+                .map(
+                  (url) => _RecentUrlTile(
+                    originalUrl: url.original,
+                    shortUrl: url.shortened,
+                  ),
+                )
+                .elementAt(reverseIndex);
           },
-        ),
-      ],
+          separatorBuilder: (context, index) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Divider(thickness: 1),
+            );
+          },
+        );
+        // return ListView(shrinkWrap: true);
+      },
     );
   }
 }
@@ -63,10 +52,9 @@ class RecentUrlList extends StatelessWidget {
 /// {@template recent_url_tile}
 /// Builds a [ListTile] that displays the original and shortened url.
 /// {@endtemplate}
-@visibleForTesting
-class RecentUrlTile extends StatelessWidget {
+class _RecentUrlTile extends StatelessWidget {
   /// {@macro recent_url_tile}
-  const RecentUrlTile({
+  const _RecentUrlTile({
     Key? key,
     required this.originalUrl,
     required this.shortUrl,

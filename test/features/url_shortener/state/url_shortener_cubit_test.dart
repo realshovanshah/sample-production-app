@@ -46,7 +46,7 @@ void main() {
     test('initial state is UrlShortenerInitial', () {
       expect(
         UrlShortenerCubit(urlShortenerRepository: _repository).state,
-        equals(UrlShortenerState.idle()),
+        equals(UrlShortenerState.idle(recents: Stack())),
       );
     });
 
@@ -56,7 +56,7 @@ void main() {
         const [UrlModel(original: 'original', shortened: 'shortened')],
       );
     });
-    group('.shortenUrl', () {
+    group('.urlShortened', () {
       const _mockErrorMsg = 'mock-error-msg';
       blocTest<UrlShortenerCubit, UrlShortenerState>(
         'emits a success state with the shortened url',
@@ -64,7 +64,7 @@ void main() {
           return UrlShortenerCubit(urlShortenerRepository: _repository);
         },
         act: (cubit) async {
-          await cubit.shortenUrl('mock-url');
+          await cubit.urlShortened('mock-url');
         },
         expect: () => <UrlShortenerState>[
           UrlShortenerState.loading(recents: Stack()),
@@ -78,7 +78,7 @@ void main() {
           return UrlShortenerCubit(urlShortenerRepository: _repository);
         },
         act: (cubit) async {
-          await cubit.shortenUrl('mock-url');
+          await cubit.urlShortened('mock-url');
         },
         seed: () => UrlShortenerState.success(recents: _recents),
         expect: () => <UrlShortenerState>[
@@ -90,7 +90,7 @@ void main() {
       );
 
       blocTest<UrlShortenerCubit, UrlShortenerState>(
-        'emits a failure state when the repository thorws an error',
+        'emits a failure state when the repository throws an error',
         build: () {
           return UrlShortenerCubit(urlShortenerRepository: _repository);
         },
@@ -103,7 +103,7 @@ void main() {
               UrlShortenerFailure(_mockErrorMsg),
             ),
           );
-          await cubit.shortenUrl('mock-url');
+          await cubit.urlShortened('mock-url');
         },
         expect: () => <UrlShortenerState>[
           UrlShortenerState.loading(recents: Stack()),
@@ -125,7 +125,7 @@ void main() {
               UrlShortenerFailure(_mockErrorMsg),
             ),
           );
-          await cubit.shortenUrl('mock-url');
+          await cubit.urlShortened('mock-url');
         },
         seed: () => UrlShortenerState.success(recents: _recents),
         expect: () => <UrlShortenerState>[
@@ -135,14 +135,45 @@ void main() {
       );
     });
 
-    group('.resetStatus', () {
+    group('.urlCleared', () {
       blocTest<UrlShortenerCubit, UrlShortenerState>(
-        'changes from current to initial state and retains data',
+        'if cleared url was shorted url, changes to initial state',
         build: () {
           return UrlShortenerCubit(urlShortenerRepository: _repository);
         },
         act: (cubit) {
-          cubit.resetStatus();
+          final _shortenedUrl = _recents.peek.shortened;
+          cubit.urlCleared(
+            _shortenedUrl.substring(0, _shortenedUrl.length - 1),
+          );
+        },
+        seed: () => UrlShortenerState.success(recents: _recents),
+        expect: () => <UrlShortenerState>[
+          UrlShortenerState.idle(recents: _recents),
+        ],
+      );
+
+      blocTest<UrlShortenerCubit, UrlShortenerState>(
+        'if cleared url was not shorted, does not change to initial state',
+        build: () {
+          return UrlShortenerCubit(urlShortenerRepository: _repository);
+        },
+        act: (cubit) {
+          cubit.urlCleared(_recents.peek.shortened);
+        },
+        seed: () => UrlShortenerState.success(recents: _recents),
+        expect: () => <UrlShortenerState>[],
+      );
+    });
+
+    group('.textCopied', () {
+      blocTest<UrlShortenerCubit, UrlShortenerState>(
+        'emits initial State, retains state',
+        build: () {
+          return UrlShortenerCubit(urlShortenerRepository: _repository);
+        },
+        act: (cubit) async {
+          cubit.textCopied();
         },
         seed: () => UrlShortenerState.success(recents: _recents),
         expect: () => <UrlShortenerState>[

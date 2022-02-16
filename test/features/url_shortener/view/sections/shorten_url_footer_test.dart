@@ -19,8 +19,10 @@ void main() {
     late MockUrlShortenerCubit _cubit;
     setUp(() {
       _cubit = MockUrlShortenerCubit();
-      when(() => _cubit.state).thenReturn(UrlShortenerState.idle());
-      when(() => _cubit.shortenUrl(any())).thenAnswer((_) async {});
+      when(() => _cubit.state).thenReturn(
+        UrlShortenerState.idle(recents: Stack()),
+      );
+      when(() => _cubit.urlShortened(any())).thenAnswer((_) async {});
     });
 
     testWidgets(
@@ -47,8 +49,41 @@ void main() {
         );
         await tester.enterText(find.byType(TextFormField), invalidText);
         await tester.tap(find.byType(ActionButton));
+        await tester.pumpAndSettle();
 
-        verifyNever(() => _cubit.shortenUrl(invalidText));
+        verifyNever(() => _cubit.urlShortened(invalidText));
+      },
+    );
+
+    testWidgets(
+      'shows empty error message if the url is empty',
+      (tester) async {
+        const invalidText = ' ';
+        await tester.pumpAppWithDependencies(
+          const ShortenUrlFooter(),
+          cubit: _cubit,
+        );
+        await tester.enterText(find.byType(TextFormField), invalidText);
+        await tester.tap(find.byType(ActionButton));
+        await tester.pumpAndSettle();
+
+        expect(find.text('URL cannot be empty.'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'shows a invalid url error message if the url is invalid',
+      (tester) async {
+        const invalidText = 'invalid url';
+        await tester.pumpAppWithDependencies(
+          const ShortenUrlFooter(),
+          cubit: _cubit,
+        );
+        await tester.enterText(find.byType(TextFormField), invalidText);
+        await tester.tap(find.byType(ActionButton));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Please enter a valid url.'), findsOneWidget);
       },
     );
 
@@ -77,7 +112,7 @@ void main() {
       'shows a action button on initial state',
       (tester) async {
         when(() => _cubit.state).thenReturn(
-          UrlShortenerState.idle(),
+          UrlShortenerState.idle(recents: Stack()),
         );
         await tester.pumpAppWithDependencies(
           const ShortenUrlFooter(),
@@ -123,7 +158,6 @@ void main() {
     );
 
     testWidgets(
-      //todo:
       'button changes from loading to copy state when the state is success',
       (tester) async {
         final _mockRecents = Stack.of(
@@ -153,8 +187,40 @@ void main() {
       },
     );
 
+    testWidgets('TextFormField sends text to cubit on change', (tester) async {
+      when(() => _cubit.urlCleared(any())).thenReturn(null);
+      await tester.pumpAppWithDependencies(
+        const ShortenUrlFooter(),
+        cubit: _cubit,
+      );
+
+      await tester.pumpAndSettle();
+      expect(find.byType(TextFormField), findsOneWidget);
+      await tester.enterText(find.byType(TextFormField), 'some-text');
+
+      verify(() => _cubit.urlCleared('some-text')).called(1);
+    });
+
+    testWidgets('fills form text field with the shortened url on success',
+        (tester) async {
+      final _mockRecents = Stack.of(
+        const [UrlModel(original: 'any-long', shortened: 'any-short')],
+      );
+      whenListen(
+        _cubit,
+        Stream.value(UrlShortenerState.success(recents: _mockRecents)),
+      );
+      await tester.pumpAppWithDependencies(
+        const ShortenUrlFooter(),
+        cubit: _cubit,
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(TextFormField), findsOneWidget);
+      expect(find.text('any-short'), findsOneWidget);
+    });
+
     testWidgets(
-      'resetStatus is called when the CopyActionButton is tapped',
+      'textCopied on cubit is called when the CopyActionButton is tapped',
       (tester) async {
         final _mockRecents = Stack.of(
           const [UrlModel(original: 'any-long', shortened: 'any-short')],
@@ -162,7 +228,7 @@ void main() {
         when(() => _cubit.state).thenReturn(
           UrlShortenerState.success(recents: _mockRecents),
         );
-        when(_cubit.resetStatus).thenReturn(null);
+        when(_cubit.textCopied).thenReturn('any');
 
         await tester.pumpAppWithDependencies(
           const ShortenUrlFooter(),
@@ -170,35 +236,41 @@ void main() {
         );
         await tester.pumpAndSettle();
         await tester.tap(find.byType(CopyActionButton));
+        await tester.pumpAndSettle();
 
-        verify(_cubit.resetStatus).called(1);
+        verify(_cubit.textCopied).called(1);
       },
     );
 
-    // testWidgets('fills the text field with url on success', (tester) {});
-
     testWidgets(
-      'clears the text field when the CopyActionButton is tapped',
+      'no text in the text field on idle state',
       (tester) async {
-        const mockText = 'mock-text';
-        final _mockRecents = Stack<UrlModel>.of(
-          const [UrlModel(original: 'mock-url', shortened: 'mock-short-url')],
+        const _mockText = 'any-text';
+        final _mockRecents = Stack.of(
+          const [UrlModel(original: 'any-long', shortened: 'any-short')],
         );
-        when(() => _cubit.state).thenReturn(
-          UrlShortenerState.success(recents: _mockRecents),
+        const _pumpDuration = Duration(seconds: 1);
+        final _states = [
+          UrlShortenerState.loading(recents: _mockRecents),
+          UrlShortenerState.idle(recents: _mockRecents),
+        ];
+        whenListen(
+          _cubit,
+          Stream.periodic(_pumpDuration, (i) => _states[i]).take(2),
         );
+
         await tester.pumpAppWithDependencies(
           const ShortenUrlFooter(),
           cubit: _cubit,
         );
-
-        await tester.enterText(find.byType(TextFormField), mockText);
-        expect(find.text(mockText), findsOneWidget);
-
-        await tester.tap(find.byType(CopyActionButton));
         await tester.pumpAndSettle();
-        // the state should be success by now
-        expect(find.text(mockText), findsNothing);
+        await tester.enterText(find.byType(TextFormField), _mockText);
+
+        await tester.pump(_pumpDuration);
+        expect(find.text(_mockText), findsOneWidget);
+
+        await tester.pumpAndSettle(_pumpDuration);
+        expect(find.text(_mockText), findsNothing);
       },
     );
   });

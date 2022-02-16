@@ -10,7 +10,6 @@ import 'package:link_shortener/l10n/l10n.dart';
 /// A [BottomSheet] with a [TextField] and an [ActionButton],
 /// that takes in a URL and displays the shortened URL.
 /// {@endtemplate}
-@visibleForTesting
 class ShortenUrlFooter extends StatefulWidget {
   /// {@macro shorten_url_bottom_sheet}
   const ShortenUrlFooter({Key? key}) : super(key: key);
@@ -32,26 +31,11 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
     _shortenerCubit = context.read<UrlShortenerCubit>();
   }
 
-  String get _textValue => _urlController.text.trim();
-
-  void _onFormSubmit() {
-    log('_onFormSubmit: Form value: $_textValue', name: 'UrlShortenerPage');
-    final _formState = _formKey.currentState;
-    if (mounted && _formState!.validate()) {
-      _shortenerCubit.shortenUrl(_textValue);
-    }
-  }
-
-  String _onCopy() {
-    log('_onCopy: Copied to clipboard, $_textValue', name: 'UrlShortenerPage');
-    _urlController.clear();
-    _shortenerCubit.resetStatus();
-    return _textValue;
-  }
-
-  void _handleFailure(String msg) {
-    log('_handleFailure: displaying message, $msg', name: 'UrlShortenerPage');
-    showAppSnackbar(context, status: SnackbarStatus.error, message: msg);
+  @override
+  void dispose() {
+    _urlController.dispose();
+    _formKey.currentState?.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,6 +45,12 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
       listener: (context, state) {
         if (state.status == UrlShortenerStatus.failure) {
           _handleFailure(state.errorMessage ?? l10n.unexpectedErrorText);
+        }
+        if (state.status == UrlShortenerStatus.success) {
+          _handleSuccess(state.recentUrl.shortened);
+        }
+        if (state.status == UrlShortenerStatus.idle) {
+          _handleIdle();
         }
       },
       child: Padding(
@@ -73,18 +63,16 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
               key: _formKey,
               child: TextFormField(
                 controller: _urlController,
+                onChanged: _shortenerCubit.urlCleared,
                 decoration: InputDecoration(
                   hintText: l10n.urlPrompt,
                   border: const OutlineInputBorder(),
                   suffixIcon: Padding(
                     padding: const EdgeInsets.all(8),
-                    child: _ShortenUrlAction(
-                      onSend: _onFormSubmit,
-                      onCopy: _onCopy,
-                    ),
+                    child: _ShortenUrlAction(onSend: _onSend, onCopy: _onCopy),
                   ),
                 ),
-                validator: requiredValidator(l10n.urlRequired),
+                validator: urlValidator(),
               ),
             ),
           ],
@@ -93,11 +81,31 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
     );
   }
 
-  @override
-  void dispose() {
-    _urlController.dispose();
-    _formKey.currentState?.dispose();
-    super.dispose();
+  String get _textValue => _urlController.text.trim();
+
+  void _onSend() {
+    log('_onFormSubmit: Form value: $_textValue', name: 'UrlShortenerPage');
+    final _formState = _formKey.currentState;
+    if (mounted && _formState!.validate()) {
+      _shortenerCubit.urlShortened(_textValue);
+    }
+  }
+
+  String _onCopy() => _shortenerCubit.textCopied();
+
+  void _handleIdle() {
+    log('_handleIdle: clearing text if any', name: 'UrlShortenerPage');
+    if (_textValue.isNotEmpty) _urlController.clear();
+  }
+
+  void _handleSuccess(String url) {
+    log('_handleSuccess: displaying url $url', name: 'UrlShortenerPage');
+    _urlController.text = url;
+  }
+
+  void _handleFailure(String msg) {
+    log('_handleFailure: displaying message, $msg', name: 'UrlShortenerPage');
+    showAppSnackbar(context, status: SnackbarStatus.error, message: msg);
   }
 }
 
@@ -127,22 +135,3 @@ class _ShortenUrlAction extends StatelessWidget {
     );
   }
 }
-
-// class _ErrorMessage extends StatelessWidget {
-//   const _ErrorMessage({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final l10n = context.l10n;
-//     return BlocSelector<UrlShortenerCubit, UrlShortenerState, String?>(
-//       selector: (state) => state.errorMessage,
-//       builder: (context, msg) {
-//         if (msg == null) return const SizedBox.shrink();
-//         return Text(
-//           msg.isEmpty ? l10n.unexpectedErrorText : msg,
-//           style: Theme.of(context).inputDecorationTheme.errorStyle,
-//         );
-//       },
-//     );
-//   }
-// }

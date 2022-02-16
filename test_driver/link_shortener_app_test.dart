@@ -13,7 +13,7 @@ void main() {
   });
 
   test('shortens a url and displays the result', () async {
-    const _originalUrl = 'www.google.com';
+    const _originalUrl = 'www.test.com';
 
     final textField = find.byType('TextFormField');
     await _driver.waitFor(textField);

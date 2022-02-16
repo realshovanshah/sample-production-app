@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:link_shortener/features/url_shortener/state/state.dart';
 import 'package:link_shortener/features/url_shortener/view/sections/recent_url_list.dart';
 import 'package:link_shortener/features/url_shortener/view/sections/shornen_url_footer.dart';
+import 'package:link_shortener/l10n/l10n.dart';
 import 'package:url_shortener_repository/url_shortener_repository.dart';
 
 /// {@template link_shortener_page}
@@ -36,14 +37,32 @@ class UrlShortenerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
+        persistentFooterButtons: [
+          AnimatedPadding(
+            padding: MediaQuery.of(context).viewInsets,
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.decelerate,
+            child: const ShortenUrlFooter(),
+          ),
+        ],
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
-          children: const [
-            RecentUrlList(),
-            ShortenUrlFooter(),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                l10n.recentUrlTitle,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+            const Expanded(
+              child: RecentUrlList(),
+            ),
           ],
         ),
       ),

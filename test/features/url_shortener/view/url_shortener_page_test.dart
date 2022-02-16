@@ -1,5 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter/material.dart';
+import 'package:equatable_stack/equatable_stack.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:link_shortener/features/url_shortener/state/url_shortener_cubit.dart';
 import 'package:link_shortener/features/url_shortener/view/view.dart';
@@ -22,7 +22,9 @@ void main() {
     setUp(() {
       _cubit = MockUrlShortenerCubit();
       _repository = MockUrlShortenerRepository();
-      when(() => _cubit.state).thenReturn(UrlShortenerState.idle());
+      when(() => _cubit.state).thenReturn(
+        UrlShortenerState.idle(recents: Stack()),
+      );
     });
 
     test('instantiates', () {
@@ -46,7 +48,6 @@ void main() {
             const UrlShortenerView(),
             cubit: _cubit,
           );
-          expect(find.byType(Scaffold), findsOneWidget);
           expect(find.byType(ShortenUrlFooter), findsOneWidget);
           expect(find.byType(RecentUrlList), findsOneWidget);
         },
