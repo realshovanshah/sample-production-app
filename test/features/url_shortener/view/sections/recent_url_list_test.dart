@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:equatable_stack/equatable_stack.dart';
-import 'package:flutter/material.dart' show ListTile, ListView;
+import 'package:flutter/material.dart' show ListTile, ListView, Text;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:link_shortener/features/url_shortener/models/url_model.dart';
 import 'package:link_shortener/features/url_shortener/state/state.dart';
@@ -26,6 +26,20 @@ void main() {
     test('instantiates', () {
       const widget = RecentUrlList();
       expect(widget, isA<RecentUrlList>());
+    });
+
+    testWidgets('renders correctly', (tester) async {
+      await tester.pumpAppWithDependencies(
+        const RecentUrlList(),
+        cubit: _cubit,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is ListView || widget is Text,
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('Show empty message on initial state', (tester) async {

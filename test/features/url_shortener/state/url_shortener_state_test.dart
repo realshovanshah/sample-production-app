@@ -62,34 +62,31 @@ void main() {
     });
   });
 
-  group('support value equality', () {
-    test('UrlShortenerState.loading', () {
-      final _mockRecents = Stack<UrlModel>.of(
-        const [
-          UrlModel(
-            original: 'https://www.test.com',
-            shortened: 'https://te.co/1',
-          )
-        ],
-      );
-      final _mockState1 = UrlShortenerState.loading(recents: _mockRecents);
-      final _mockState2 = UrlShortenerState.loading(recents: _mockRecents);
-      expect(_mockState1, _mockState2);
-    });
+  test('support value equality', () {
+    final _mockRecents = Stack<UrlModel>.of(
+      const [
+        UrlModel(
+          original: 'https://www.test.com',
+          shortened: 'https://te.co/1',
+        )
+      ],
+    );
+    final _mockState1 = UrlShortenerState.loading(recents: _mockRecents);
+    final _mockState2 = UrlShortenerState.loading(recents: _mockRecents);
+    expect(_mockState1, _mockState2);
+    expect(_mockState1.hashCode, _mockState2.hashCode);
   });
 
-  group('overrides toString method', () {
-    test('UrlShortenerState.idle', () {
-      final _mockRecents = Stack<UrlModel>.of(
-        const [
-          UrlModel(
-            original: 'https://www.test.com',
-            shortened: 'https://t.co/1',
-          )
-        ],
-      );
-      final _mockState = UrlShortenerState.idle(recents: _mockRecents);
-      expect(_mockState.toString(), contains('${_mockState.runtimeType}'));
-    });
+  test('overrides toString method', () {
+    final _mockRecents = Stack<UrlModel>.of(
+      const [
+        UrlModel(
+          original: 'https://www.test.com',
+          shortened: 'https://t.co/1',
+        )
+      ],
+    );
+    final _mockState = UrlShortenerState.idle(recents: _mockRecents);
+    expect(_mockState.toString(), contains('${_mockState.runtimeType}'));
   });
 }

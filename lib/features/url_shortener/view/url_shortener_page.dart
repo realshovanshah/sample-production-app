@@ -31,9 +31,7 @@ class UrlShortenerPage extends StatelessWidget {
 /// {@endtemplate}
 class UrlShortenerView extends StatelessWidget {
   /// {@macro url_shortener_view}
-  const UrlShortenerView({
-    Key? key,
-  }) : super(key: key);
+  const UrlShortenerView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -56,6 +56,22 @@ void main() {
     );
 
     testWidgets(
+      'shortenUrl on cubit is invoked if the text valid',
+      (tester) async {
+        const validUrl = 'valid.com';
+        await tester.pumpAppWithDependencies(
+          const ShortenUrlFooter(),
+          cubit: _cubit,
+        );
+        await tester.enterText(find.byType(TextFormField), validUrl);
+        await tester.tap(find.byType(ActionButton));
+        await tester.pumpAndSettle();
+
+        verify(() => _cubit.urlShortened(validUrl)).called(1);
+      },
+    );
+
+    testWidgets(
       'shows empty error message if the url is empty',
       (tester) async {
         const invalidText = ' ';

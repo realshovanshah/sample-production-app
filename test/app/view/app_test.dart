@@ -26,8 +26,9 @@ void main() {
 
   group('AppView', () {
     testWidgets('renders UrlShortenerPage', (tester) async {
-      await tester.pumpWidget(
-        App(urlShortenerRepository: _repository),
+      await tester.pumpWidgetWithDependencies(
+        const AppView(),
+        repository: _repository,
       );
       expect(find.byType(UrlShortenerPage), findsOneWidget);
     });

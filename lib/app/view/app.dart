@@ -32,9 +32,7 @@ class App extends StatelessWidget {
 /// {@endtemplate}
 class AppView extends StatelessWidget {
   /// {@macro app_view}
-  const AppView({
-    Key? key,
-  }) : super(key: key);
+  const AppView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

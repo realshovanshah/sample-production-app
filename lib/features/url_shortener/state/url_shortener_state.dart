@@ -90,7 +90,8 @@ class UrlShortenerState {
 
   /// The hashCode method.
   @override
-  int get hashCode => hashValues(status, recents, errorMessage);
+  int get hashCode =>
+      recents.hashCode ^ status.hashCode ^ errorMessage.hashCode;
 }
 
 /// Describes the different statuses of the [UrlShortenerState].

@@ -5,13 +5,11 @@ import 'package:link_shortener/l10n/l10n.dart';
 
 /// {@template recent_url_list}
 /// A [ListView] that displays the recently shortened urls.
-/// Reacts to changes in the [UrlShortenerState].
+/// Reacts to changes in the [UrlShortenerState]. Shows a message if empty.
 /// {@endtemplate}
 class RecentUrlList extends StatelessWidget {
   /// {@macro recent_url_view}
-  const RecentUrlList({
-    Key? key,
-  }) : super(key: key);
+  const RecentUrlList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
