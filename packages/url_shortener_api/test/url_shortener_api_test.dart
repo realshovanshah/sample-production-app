@@ -31,8 +31,14 @@ void main() {
       );
     });
 
-    test('instantiates', () {
-      expect(_api, isA<UrlShortenerApi>());
+    group('instantiation', () {
+      test('client provided', () {
+        expect(_api, isA<UrlShortenerApi>());
+      });
+
+      test('no client provided', () {
+        expect(UrlShortenerApi(), isA<UrlShortenerApi>());
+      });
     });
 
     group('.getOriginalUrl', () {
@@ -99,11 +105,30 @@ void main() {
         verify(_mockRequest).called(1);
       });
 
-      test('throws a BadResponseException on incorrect response', () async {
+      test('throws a BadResponseException on incorrect response type',
+          () async {
         Future<Response<String>> _mockRequest() => _dio.get<String>(_goodUrl);
         when(_mockRequest).thenAnswer(
           (_) async => Response<String>(
             data: 'unexpected-response',
+            statusCode: 200,
+            requestOptions: _goodRequestOptions,
+          ),
+        );
+
+        expect(
+          () async => _api.getOriginalUrl(aliasId: _goodAliasId),
+          throwsA(isA<BadResponseException>()),
+        );
+        verify(_mockRequest).called(1);
+      });
+
+      test('throws a BadResponseException on incorrect response data',
+          () async {
+        Future<Response<JsonMap>> _mockRequest() => _dio.get<JsonMap>(_goodUrl);
+        when(_mockRequest).thenAnswer(
+          (_) async => Response<JsonMap>(
+            data: <String, dynamic>{'unexpected-data': 'unexpected-data'},
             statusCode: 200,
             requestOptions: _goodRequestOptions,
           ),

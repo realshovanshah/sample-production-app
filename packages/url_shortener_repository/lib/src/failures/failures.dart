@@ -23,4 +23,7 @@ class UrlShortenerFailure extends Failure {
 
   @override
   int get hashCode => message.hashCode;
+
+  @override
+  String toString() => 'UrlShortenerFailure(message: $message)';
 }

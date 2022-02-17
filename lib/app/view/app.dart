@@ -43,6 +43,7 @@ class AppView extends StatelessWidget {
           accentColor: const Color(0xFF13B9FF),
         ),
       ),
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

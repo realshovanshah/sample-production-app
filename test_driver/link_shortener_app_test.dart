@@ -22,5 +22,11 @@ void main() {
 
     final confirmButton = find.byType('ActionButton');
     await _driver.tap(confirmButton);
+
+    // from the mock repository
+    final resultText = find.text('https://www.test.com');
+    // await _driver.text(confirmButton);
+    await _driver.waitFor(resultText);
+    await _driver.tap(find.byType('CopyActionButton'));
   });
 }

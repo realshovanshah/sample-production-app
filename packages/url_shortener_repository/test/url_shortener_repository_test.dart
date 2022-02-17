@@ -30,6 +30,10 @@ void main() {
       expect(_repository, isA<UrlShortenerRepository>());
     });
 
+    test('implementation without a repository, instantiates', () {
+      expect(UrlShortenerRepositoryImpl(), isA<UrlShortenerRepository>());
+    });
+
     group('.getOriginalUrl', () {
       test('correctly returns the original url', () async {
         Future<OriginalUrl> _mockRequest() => _urlShortenerApi.getOriginalUrl(
@@ -126,14 +130,16 @@ void main() {
         Future<ShortenedUrl> _mockRequest() => _urlShortenerApi.shortenUrl(
               originalUrl: _originalUrlModel,
             );
-        when(_mockRequest).thenThrow(Exception());
+        when(_mockRequest).thenThrow(const BadResponseException());
 
         final result =
             await _repository.shortenUrl(originalUrl: _originalUrlModel);
         expect(
           result,
-          Result<UrlShortenerFailure, ShortenedUrl>.failure(
-            UrlShortenerFailure(),
+          isA<Result<UrlShortenerFailure, ShortenedUrl>>().having(
+            (p0) => p0.when(success: (_) => false, failure: (_) => true),
+            'failure',
+            true,
           ),
         );
 

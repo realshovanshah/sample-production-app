@@ -11,9 +11,7 @@ class Stack<E> {
 
   /// Returns a new stack with all objects of [iterable].
   factory Stack.of(Iterable<E> iterable) {
-    return Stack<E>()
-      ..clear()
-      ..pushAll(iterable);
+    return Stack<E>()..pushAll(iterable);
   }
 
   final _list = <E>[];

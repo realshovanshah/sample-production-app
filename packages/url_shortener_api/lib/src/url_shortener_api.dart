@@ -11,9 +11,8 @@ import 'package:url_shortener_api/src/types/types.dart';
 /// {@endtemplate}
 class UrlShortenerApi {
   /// {@macro url_shortener_api}
-  UrlShortenerApi({
-    Dio? dio,
-  }) : _dio = dio ?? Dio()
+  UrlShortenerApi({Dio? dio})
+      : _dio = dio ?? Dio()
           ..options = BaseOptions(
             baseUrl: _kUrlBase,
             contentType: Headers.jsonContentType,
