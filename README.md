@@ -25,13 +25,13 @@ A simple link shortener app.
 ## Architecture & Processes
 
 - Layered architecture with a good separation of concerns between the presentation layer, business logic, repositories & the network layer.
-- Tried to follow TDD. Fully tested code. (UI, Unit & some Integration Tests)
+- Tried to follow TDD. Fully tested code. (Widget, Unit & some Integration Tests)
 - In par with the [Test Pyramid][test_pyramid_link]
 
 ## Improvements
 
 - [ ] Add a feature to fetch a url by it's alias.
-- [ ] Add more about integration and E2E tests.
+- [ ] Add more integration and E2E tests.
 - [ ] More fined grained exception handling.
 - [ ] Discuss other implementations for showing the recently shortened urls.
 
