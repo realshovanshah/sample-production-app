@@ -92,8 +92,7 @@ $ flutter drive --flavor development -t test_driver/link_shortener_app.dart
 
 ## App Screenshots
 
-![Home/Recents][empty_recents_image]
-![Shortened Urls][shortened_urls_image]
+<img src ="images/empty-recents.png" alt="Home/Recents" width = 300> <img src ="images/shortened-urls.png" alt="Shortened Urls" width = 300>
 
 ---
 
