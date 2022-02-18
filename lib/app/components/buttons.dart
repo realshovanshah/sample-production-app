@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /// {@template action_button}
 /// Action button of the UrlShortener Design System.
@@ -50,13 +49,13 @@ class CopyActionButton extends StatelessWidget {
   }) : super(key: key);
 
   /// Callback that returns the text to be copied.
-  final ValueGetter<String> onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: onTap,
       child: const Icon(Icons.copy, color: Colors.black),
-      onTap: () => Clipboard.setData(ClipboardData(text: onTap())),
     );
   }
 }

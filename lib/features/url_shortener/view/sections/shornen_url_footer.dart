@@ -47,7 +47,7 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
           _handleFailure(state.errorMessage ?? l10n.unexpectedErrorText);
         }
         if (state.status == UrlShortenerStatus.success) {
-          _handleSuccess(state.recentUrl.shortened);
+          _handleSuccess(state.recentUrl!.shortened);
         }
         if (state.status == UrlShortenerStatus.idle) {
           _handleIdle();
@@ -91,7 +91,7 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
     }
   }
 
-  String _onCopy() => _shortenerCubit.textCopied();
+  void _onCopy() => _shortenerCubit.textCopied();
 
   void _handleIdle() {
     log('_handleIdle: clearing text if any', name: 'UrlShortenerPage');
@@ -117,7 +117,7 @@ class _ShortenUrlAction extends StatelessWidget {
   }) : super(key: key);
 
   final VoidCallback onSend;
-  final ValueGetter<String> onCopy;
+  final VoidCallback onCopy;
 
   @override
   Widget build(BuildContext context) {

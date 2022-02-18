@@ -68,7 +68,10 @@ class UrlShortenerState {
 
   /// A shorthand to get the recently shortened URL, i.e.
   /// the one on the top of the stack.
-  UrlModel get recentUrl => recents.peek;
+  UrlModel? get recentUrl {
+    if (recents.isNotEmpty) return recents.peek;
+    return null;
+  }
 
   /// The toString method.
   @override
