@@ -2,6 +2,11 @@ import 'package:equatable_stack/equatable_stack.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:link_shortener/features/url_shortener/models/url_model.dart';
 import 'package:link_shortener/features/url_shortener/state/state.dart';
+import 'package:mocktail/mocktail.dart';
+
+class MockCallback extends Mock {
+  void call();
+}
 
 void main() {
   group('instantiation', () {
@@ -60,6 +65,42 @@ void main() {
             .having((p3) => p3.status, 'status', UrlShortenerStatus.failure),
       );
     });
+  });
+
+  test('.whenOrNull', () {
+    final _mockRecents = Stack<UrlModel>.of(
+      const [
+        UrlModel(original: 'https://www.test.com', shortened: 'https://t.co/1')
+      ],
+    );
+
+    final mockSuccessCallback = MockCallback();
+    when(mockSuccessCallback.call).thenReturn(null);
+    UrlShortenerState.success(recents: _mockRecents).whenOrNull(
+      success: (recents) => mockSuccessCallback.call(),
+    );
+    verify(mockSuccessCallback.call).called(1);
+
+    final mockLoadingCallback = MockCallback();
+    when(mockLoadingCallback.call).thenReturn(null);
+    UrlShortenerState.loading(recents: _mockRecents).whenOrNull<void>(
+      loading: mockLoadingCallback.call,
+    );
+    verify(mockLoadingCallback.call).called(1);
+
+    final mockFailureCallback = MockCallback();
+    when(mockFailureCallback.call).thenReturn(null);
+    UrlShortenerState.failure(recents: _mockRecents, message: '').whenOrNull(
+      failure: (message) => mockFailureCallback.call(),
+    );
+    verify(mockFailureCallback.call).called(1);
+
+    final mockIdleCallback = MockCallback();
+    when(mockIdleCallback.call).thenReturn(null);
+    UrlShortenerState.idle(recents: _mockRecents).whenOrNull<void>(
+      idle: mockIdleCallback.call,
+    );
+    verify(mockIdleCallback.call).called(1);
   });
 
   test('support value equality', () {

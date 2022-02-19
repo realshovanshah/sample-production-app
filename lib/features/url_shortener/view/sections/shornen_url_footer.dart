@@ -23,6 +23,8 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
   late final GlobalKey<FormState> _formKey;
   late final UrlShortenerCubit _shortenerCubit;
 
+  String get _textValue => _urlController.text.trim();
+
   @override
   void initState() {
     super.initState();
@@ -42,17 +44,11 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return BlocListener<UrlShortenerCubit, UrlShortenerState>(
-      listener: (context, state) {
-        if (state.status == UrlShortenerStatus.failure) {
-          _handleFailure(state.errorMessage ?? l10n.unexpectedErrorText);
-        }
-        if (state.status == UrlShortenerStatus.success) {
-          _handleSuccess(state.recentUrl!.shortened);
-        }
-        if (state.status == UrlShortenerStatus.idle) {
-          _handleIdle();
-        }
-      },
+      listener: (_, state) => state.whenOrNull(
+        failure: _handleFailure,
+        success: _handleSuccess,
+        idle: _handleIdle,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -80,8 +76,6 @@ class _ShortenUrlFooterState extends State<ShortenUrlFooter> {
       ),
     );
   }
-
-  String get _textValue => _urlController.text.trim();
 
   void _onSend() {
     log('_onFormSubmit: Form value: $_textValue', name: 'UrlShortenerPage');

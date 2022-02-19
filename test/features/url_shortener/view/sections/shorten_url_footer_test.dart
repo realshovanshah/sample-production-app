@@ -244,7 +244,7 @@ void main() {
         when(() => _cubit.state).thenReturn(
           UrlShortenerState.success(recents: _mockRecents),
         );
-        when(_cubit.textCopied).thenReturn('any');
+        when(_cubit.textCopied).thenReturn(null);
 
         await tester.pumpAppWithDependencies(
           const ShortenUrlFooter(),

@@ -34,6 +34,8 @@ A simple link shortener app.
 - [ ] Add more integration and E2E tests.
 - [ ] More fined grained exception handling.
 - [ ] Discuss other implementations for showing the recently shortened urls.
+- [ ] Fix redundant documentations
+- [ ] Make the url shortener state more explicit (eg. by adding a maybe function)
 
 ---
 

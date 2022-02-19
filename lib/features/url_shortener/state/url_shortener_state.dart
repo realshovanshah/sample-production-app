@@ -68,9 +68,30 @@ class UrlShortenerState {
 
   /// A shorthand to get the recently shortened URL, i.e.
   /// the one on the top of the stack.
-  UrlModel? get recentUrl {
-    if (recents.isNotEmpty) return recents.peek;
+  String? get recentUrl {
+    if (recents.isNotEmpty) return recents.peek.shortened;
     return null;
+  }
+
+  // todo: add unit tests
+  /// Emulating pattern matching for making exclusive states clear.
+  /// Return a null value as the fallback.
+  T? whenOrNull<T>({
+    T Function()? idle,
+    T Function()? loading,
+    T Function(String shortenedUrl)? success,
+    T Function(String message)? failure,
+  }) {
+    switch (status) {
+      case UrlShortenerStatus.idle:
+        return idle?.call();
+      case UrlShortenerStatus.loading:
+        return loading?.call();
+      case UrlShortenerStatus.success:
+        return success?.call(recentUrl!);
+      case UrlShortenerStatus.failure:
+        return failure?.call(errorMessage!);
+    }
   }
 
   /// The toString method.

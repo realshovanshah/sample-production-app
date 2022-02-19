@@ -40,7 +40,7 @@ class UrlShortenerCubit extends Cubit<UrlShortenerState> {
   /// Changes the state to [UrlShortenerState.idle]
   /// while retaining data if the url is cleared.
   void urlCleared(String url) {
-    final _shortUrl = state.recentUrl?.shortened;
+    final _shortUrl = state.recentUrl;
     log('urlCleared: shortUrl, $_shortUrl', name: 'UrlShortenerPage');
     if (url != _shortUrl) emit(UrlShortenerState.idle(recents: state.recents));
   }
@@ -48,7 +48,7 @@ class UrlShortenerCubit extends Cubit<UrlShortenerState> {
   /// Resets the cubit state to [UrlShortenerState.idle],
   /// and copies the recently shortened url to the clipboard (mock).
   void textCopied() {
-    final _shortUrl = state.recentUrl?.shortened;
+    final _shortUrl = state.recentUrl;
     log('_onCopy: Copied to clipboard, $_shortUrl', name: 'UrlShortenerPage');
     _mockCopyToClipboard(_shortUrl);
     emit(UrlShortenerState.idle(recents: state.recents));
