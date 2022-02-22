@@ -35,7 +35,10 @@ A simple link shortener app.
 - [ ] More fined grained exception handling.
 - [ ] Discuss other implementations for showing the recently shortened urls.
 - [ ] Fix redundant documentations
-- [ ] Make the url shortener state more explicit (eg. by adding a maybe function)
+- [x] Make the url shortener state more explicit (eg. by adding a maybe function)
+- [ ] Refactor the tests to follow the robot testing pattern for better readability and maintenance
+- [ ] Take screenshot when the integration test fails.
+- [ ] Migrate flutter_driver to the integration_test package.
 
 ---
 
