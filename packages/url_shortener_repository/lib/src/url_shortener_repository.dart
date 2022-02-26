@@ -7,8 +7,12 @@ typedef OriginalUrlResult = Result<UrlShortenerFailure, OriginalUrl>;
 /// A type representing either a [UrlShortenerFailure] or a [ShortenedUrl].
 typedef ShortenedUrlResult = Result<UrlShortenerFailure, ShortenedUrl>;
 
+/// A type representing either a [UrlShortenerFailure] or
+/// a [Iterable] of type [UrlModel].
+typedef AllUrlResult = Result<UrlShortenerFailure, Iterable<UrlModel>>;
+
 /// A repository for all functionality related to url shortening.
-/// Exposes a set of methods to interact with the [UrlShortenerApi] client.
+/// Exposes a set of methods to interact with the [UrlShortenerRemoteApi] client
 /// Should map all exceptions to strongly typed [UrlShortenerFailure]s.
 abstract class UrlShortenerRepository {
   /// Retrieves the original url for the given [aliasId].
@@ -20,4 +24,7 @@ abstract class UrlShortenerRepository {
   Future<ShortenedUrlResult> shortenUrl({
     required OriginalUrl originalUrl,
   });
+
+  /// Returns a list of all shortened urls.
+  AllUrlResult getShortenedUrls();
 }

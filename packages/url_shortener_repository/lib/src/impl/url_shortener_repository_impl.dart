@@ -7,17 +7,21 @@ import 'package:url_shortener_repository/url_shortener_repository.dart';
 class UrlShortenerRepositoryImpl implements UrlShortenerRepository {
   /// {@macro url_shortener_repository}
   UrlShortenerRepositoryImpl({
-    UrlShortenerApi? urlShortenerApi,
-  }) : _urlShortenerApi = urlShortenerApi ?? UrlShortenerApi();
+    required UrlShortenerRemoteApi urlShortenerRemoteApi,
+    required UrlShortenerLocalApi urlShortenerLocalApi,
+  })  : _urlShortenerRemoteApi = urlShortenerRemoteApi,
+        _urlShortenerLocalApi = urlShortenerLocalApi;
 
-  final UrlShortenerApi _urlShortenerApi;
+  final UrlShortenerRemoteApi _urlShortenerRemoteApi;
+  final UrlShortenerLocalApi _urlShortenerLocalApi;
 
   @override
   Future<OriginalUrlResult> getOriginalUrl({
     required String aliasId,
   }) async {
     try {
-      final response = await _urlShortenerApi.getOriginalUrl(aliasId: aliasId);
+      final response =
+          await _urlShortenerRemoteApi.getOriginalUrl(aliasId: aliasId);
       return Result.success(response);
       // only [Exception] type is thrown by the api
     } on Exception catch (e) {
@@ -31,8 +35,21 @@ class UrlShortenerRepositoryImpl implements UrlShortenerRepository {
   }) async {
     try {
       final response =
-          await _urlShortenerApi.shortenUrl(originalUrl: originalUrl);
+          await _urlShortenerRemoteApi.shortenUrl(originalUrl: originalUrl);
+      _urlShortenerLocalApi.cacheShortenedUrl(
+        url: UrlModel.fromEntity(response),
+      );
       return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e.mapToFailure());
+    }
+  }
+
+  @override
+  AllUrlResult getShortenedUrls() {
+    try {
+      final urls = _urlShortenerLocalApi.getAllUrls().toList();
+      return Result.success(urls);
     } on Exception catch (e) {
       return Result.failure(e.mapToFailure());
     }
