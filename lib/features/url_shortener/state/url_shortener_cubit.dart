@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable_stack/equatable_stack.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:link_shortener/features/url_shortener/models/models.dart';
 import 'package:url_shortener_api/url_shortener_api.dart';
 import 'package:url_shortener_repository/url_shortener_repository.dart';
 

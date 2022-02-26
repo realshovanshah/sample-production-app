@@ -4,8 +4,8 @@ import 'package:url_shortener_repository/url_shortener_repository.dart';
 
 void main() {
   // swap to a mock implementation for development
-  final _urlShortenerRepository = UrlShortenerRepositoryImpl();
+  const _urlShortenerRepository = FakeUrlShortenerRepositoryImpl();
   bootstrap(
-    () => App(urlShortenerRepository: _urlShortenerRepository),
+    () => const App(urlShortenerRepository: _urlShortenerRepository),
   );
 }

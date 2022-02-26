@@ -4,10 +4,10 @@ import 'package:flutter/material.dart'
     show CircularProgressIndicator, Form, SnackBar, TextFormField;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:link_shortener/app/app.dart';
-import 'package:link_shortener/features/url_shortener/models/models.dart';
 import 'package:link_shortener/features/url_shortener/state/state.dart';
 import 'package:link_shortener/features/url_shortener/view/view.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:url_shortener_api/url_shortener_api.dart';
 
 import '../../../../helpers/helpers.dart';
 

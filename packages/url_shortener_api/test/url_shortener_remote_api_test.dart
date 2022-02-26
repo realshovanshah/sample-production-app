@@ -7,7 +7,7 @@ class MockDio extends Mock implements Dio {}
 
 void main() {
   group('UrlShortenerApiClient', () {
-    late UrlShortenerApi _api;
+    late UrlShortenerRemoteApi _api;
     late Dio _dio;
 
     const _originalUrl = 'http://mock.url';
@@ -21,7 +21,7 @@ void main() {
 
     setUp(() {
       _dio = MockDio();
-      _api = UrlShortenerApi(dio: _dio);
+      _api = UrlShortenerRemoteApi(dio: _dio);
 
       _originalUrlModel = const OriginalUrl(url: _originalUrl);
       _originalUrlData = _originalUrlModel.toJson();
@@ -33,11 +33,11 @@ void main() {
 
     group('instantiation', () {
       test('client provided', () {
-        expect(_api, isA<UrlShortenerApi>());
+        expect(_api, isA<UrlShortenerRemoteApi>());
       });
 
       test('no client provided', () {
-        expect(UrlShortenerApi(), isA<UrlShortenerApi>());
+        expect(UrlShortenerRemoteApi(), isA<UrlShortenerRemoteApi>());
       });
     });
 
@@ -48,8 +48,8 @@ void main() {
       late RequestOptions _badRequestOptions;
 
       setUp(() {
-        _goodUrl = '${UrlShortenerApi.aliasUrl}/$_goodAliasId';
-        _badUrl = '${UrlShortenerApi.aliasUrl}/$_badAliasId';
+        _goodUrl = '${UrlShortenerRemoteApi.aliasUrl}/$_goodAliasId';
+        _badUrl = '${UrlShortenerRemoteApi.aliasUrl}/$_badAliasId';
         _goodRequestOptions = RequestOptions(path: _goodUrl);
         _badRequestOptions = RequestOptions(path: _badUrl);
       });
@@ -174,7 +174,7 @@ void main() {
       late String _urlShortenerPath;
 
       setUp(() {
-        _urlShortenerPath = UrlShortenerApi.aliasUrl;
+        _urlShortenerPath = UrlShortenerRemoteApi.aliasUrl;
       });
 
       test('returns a shortened url on correct request', () async {

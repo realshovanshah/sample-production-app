@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:url_shortener_api/url_shortener_api.dart';
 
@@ -37,7 +36,7 @@ void main() {
       test('adds a shortened URL to cache', () async {
         when(() => _box.add(_mockShortenedUrl)).thenAnswer((_) async => 0);
 
-        _subject.cacheShortenedUrl(_mockShortenedUrl);
+        _subject.cacheShortenedUrl(url: UrlModel.fromEntity(_mockShortenedUrl));
         verify(() => _box.add(_mockShortenedUrl)).called(1);
       });
     });
@@ -45,7 +44,7 @@ void main() {
     group('.getAllShortenedUrls', () {
       test('returns all cached shortened URLs', () async {
         when(() => _box.values).thenReturn([_mockShortenedUrl]);
-        final result = _subject.getAllShortenedUrls();
+        final result = _subject.getAllUrls();
         expect(result, equals([_mockShortenedUrl]));
       });
     });
@@ -58,7 +57,7 @@ void main() {
       when(() => _box.values).thenReturn([existingShortenedUrl]);
       when(() => _box.add(_mockShortenedUrl)).thenAnswer((_) async => 0);
 
-      _subject.cacheShortenedUrl(_mockShortenedUrl);
+      _subject.cacheShortenedUrl(url: UrlModel.fromEntity(_mockShortenedUrl));
       verify(() => _box.add(_mockShortenedUrl)).called(1);
     });
   });

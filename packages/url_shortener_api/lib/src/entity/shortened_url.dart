@@ -8,8 +8,8 @@ part 'shortened_url.freezed.dart';
 /// {@template shortened_url}
 /// A model that represents the shortened url data.
 /// {@endtemplate}
-@freezed
 @HiveType(typeId: 1)
+@freezed
 class ShortenedUrl with _$ShortenedUrl {
   /// {@macro shortened_url}
   const factory ShortenedUrl({
@@ -28,8 +28,8 @@ class ShortenedUrl with _$ShortenedUrl {
 /// A link representation that contains both the original and the shortened url.
 /// {@endtemplate}
 @visibleForTesting
-@freezed
 @HiveType(typeId: 0)
+@freezed
 class Links with _$Links {
   /// {@macro links}
   const factory Links({

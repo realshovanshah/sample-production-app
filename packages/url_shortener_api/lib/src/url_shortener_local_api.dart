@@ -1,4 +1,3 @@
-import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:url_shortener_api/url_shortener_api.dart';
 
@@ -9,7 +8,7 @@ import 'package:url_shortener_api/url_shortener_api.dart';
 class UrlShortenerLocalApi {
   /// {@macro url_shortener_local_api}
   UrlShortenerLocalApi({required HiveInterface hive}) : _hive = hive {
-    _hive.openBox<ShortenedUrl>(kBoxUrl);
+    _hive.openBox<UrlModel>(kBoxUrl);
   }
 
   /// A open Isar connection.
@@ -21,11 +20,10 @@ class UrlShortenerLocalApi {
   static const String kBoxUrl = '__shortened_urls__';
 
   /// Saves the given [url] to the list of shortened urls cache.
-  void cacheShortenedUrl(ShortenedUrl url) =>
-      _hive.box<ShortenedUrl>(kBoxUrl).add(url);
+  void cacheShortenedUrl({required UrlModel url}) =>
+      _hive.box<UrlModel>(kBoxUrl).add(url);
 
   /// Returns all the shortened urls from the cache.
   /// todo: set a limit on the max cache size.
-  Iterable<ShortenedUrl> getAllShortenedUrls() =>
-      _hive.box<ShortenedUrl>(kBoxUrl).values;
+  Iterable<UrlModel> getAllUrls() => _hive.box<UrlModel>(kBoxUrl).values;
 }

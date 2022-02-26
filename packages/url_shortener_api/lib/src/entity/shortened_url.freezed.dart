@@ -22,8 +22,8 @@ class _$ShortenedUrlTearOff {
   const _$ShortenedUrlTearOff();
 
   _ShortenedUrl call(
-      {@JsonKey(name: 'alias') required String aliasId,
-      @JsonKey(name: '_links') required Links link}) {
+      {@JsonKey(name: 'alias') @HiveField(0) required String aliasId,
+      @JsonKey(name: '_links') @HiveField(1) required Links link}) {
     return _ShortenedUrl(
       aliasId: aliasId,
       link: link,
@@ -42,10 +42,12 @@ const $ShortenedUrl = _$ShortenedUrlTearOff();
 mixin _$ShortenedUrl {
   /// Alias id of the shortened url.
   @JsonKey(name: 'alias')
+  @HiveField(0)
   String get aliasId => throw _privateConstructorUsedError;
 
   /// Link data of the shortened url.
   @JsonKey(name: '_links')
+  @HiveField(1)
   Links get link => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,8 +62,8 @@ abstract class $ShortenedUrlCopyWith<$Res> {
           ShortenedUrl value, $Res Function(ShortenedUrl) then) =
       _$ShortenedUrlCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'alias') String aliasId,
-      @JsonKey(name: '_links') Links link});
+      {@JsonKey(name: 'alias') @HiveField(0) String aliasId,
+      @JsonKey(name: '_links') @HiveField(1) Links link});
 
   $LinksCopyWith<$Res> get link;
 }
@@ -107,8 +109,8 @@ abstract class _$ShortenedUrlCopyWith<$Res>
       __$ShortenedUrlCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'alias') String aliasId,
-      @JsonKey(name: '_links') Links link});
+      {@JsonKey(name: 'alias') @HiveField(0) String aliasId,
+      @JsonKey(name: '_links') @HiveField(1) Links link});
 
   @override
   $LinksCopyWith<$Res> get link;
@@ -146,8 +148,8 @@ class __$ShortenedUrlCopyWithImpl<$Res> extends _$ShortenedUrlCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ShortenedUrl implements _ShortenedUrl {
   const _$_ShortenedUrl(
-      {@JsonKey(name: 'alias') required this.aliasId,
-      @JsonKey(name: '_links') required this.link});
+      {@JsonKey(name: 'alias') @HiveField(0) required this.aliasId,
+      @JsonKey(name: '_links') @HiveField(1) required this.link});
 
   factory _$_ShortenedUrl.fromJson(Map<String, dynamic> json) =>
       _$$_ShortenedUrlFromJson(json);
@@ -156,11 +158,13 @@ class _$_ShortenedUrl implements _ShortenedUrl {
 
   /// Alias id of the shortened url.
   @JsonKey(name: 'alias')
+  @HiveField(0)
   final String aliasId;
   @override
 
   /// Link data of the shortened url.
   @JsonKey(name: '_links')
+  @HiveField(1)
   final Links link;
 
   @override
@@ -196,8 +200,9 @@ class _$_ShortenedUrl implements _ShortenedUrl {
 
 abstract class _ShortenedUrl implements ShortenedUrl {
   const factory _ShortenedUrl(
-      {@JsonKey(name: 'alias') required String aliasId,
-      @JsonKey(name: '_links') required Links link}) = _$_ShortenedUrl;
+          {@JsonKey(name: 'alias') @HiveField(0) required String aliasId,
+          @JsonKey(name: '_links') @HiveField(1) required Links link}) =
+      _$_ShortenedUrl;
 
   factory _ShortenedUrl.fromJson(Map<String, dynamic> json) =
       _$_ShortenedUrl.fromJson;
@@ -206,11 +211,13 @@ abstract class _ShortenedUrl implements ShortenedUrl {
 
   /// Alias id of the shortened url.
   @JsonKey(name: 'alias')
+  @HiveField(0)
   String get aliasId;
   @override
 
   /// Link data of the shortened url.
   @JsonKey(name: '_links')
+  @HiveField(1)
   Links get link;
   @override
   @JsonKey(ignore: true)
@@ -227,7 +234,8 @@ class _$LinksTearOff {
   const _$LinksTearOff();
 
   _Links call(
-      {@JsonKey(name: 'self') required String url, required String short}) {
+      {@JsonKey(name: 'self') @HiveField(0) required String url,
+      @HiveField(1) required String short}) {
     return _Links(
       url: url,
       short: short,
@@ -246,9 +254,11 @@ const $Links = _$LinksTearOff();
 mixin _$Links {
   /// The original url.
   @JsonKey(name: 'self')
+  @HiveField(0)
   String get url => throw _privateConstructorUsedError;
 
   /// The shortened url.
+  @HiveField(1)
   String get short => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -260,7 +270,9 @@ mixin _$Links {
 abstract class $LinksCopyWith<$Res> {
   factory $LinksCopyWith(Links value, $Res Function(Links) then) =
       _$LinksCopyWithImpl<$Res>;
-  $Res call({@JsonKey(name: 'self') String url, String short});
+  $Res call(
+      {@JsonKey(name: 'self') @HiveField(0) String url,
+      @HiveField(1) String short});
 }
 
 /// @nodoc
@@ -294,7 +306,9 @@ abstract class _$LinksCopyWith<$Res> implements $LinksCopyWith<$Res> {
   factory _$LinksCopyWith(_Links value, $Res Function(_Links) then) =
       __$LinksCopyWithImpl<$Res>;
   @override
-  $Res call({@JsonKey(name: 'self') String url, String short});
+  $Res call(
+      {@JsonKey(name: 'self') @HiveField(0) String url,
+      @HiveField(1) String short});
 }
 
 /// @nodoc
@@ -328,7 +342,8 @@ class __$LinksCopyWithImpl<$Res> extends _$LinksCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Links implements _Links {
   const _$_Links(
-      {@JsonKey(name: 'self') required this.url, required this.short});
+      {@JsonKey(name: 'self') @HiveField(0) required this.url,
+      @HiveField(1) required this.short});
 
   factory _$_Links.fromJson(Map<String, dynamic> json) =>
       _$$_LinksFromJson(json);
@@ -337,10 +352,12 @@ class _$_Links implements _Links {
 
   /// The original url.
   @JsonKey(name: 'self')
+  @HiveField(0)
   final String url;
   @override
 
   /// The shortened url.
+  @HiveField(1)
   final String short;
 
   @override
@@ -376,8 +393,8 @@ class _$_Links implements _Links {
 
 abstract class _Links implements Links {
   const factory _Links(
-      {@JsonKey(name: 'self') required String url,
-      required String short}) = _$_Links;
+      {@JsonKey(name: 'self') @HiveField(0) required String url,
+      @HiveField(1) required String short}) = _$_Links;
 
   factory _Links.fromJson(Map<String, dynamic> json) = _$_Links.fromJson;
 
@@ -385,10 +402,12 @@ abstract class _Links implements Links {
 
   /// The original url.
   @JsonKey(name: 'self')
+  @HiveField(0)
   String get url;
   @override
 
   /// The shortened url.
+  @HiveField(1)
   String get short;
   @override
   @JsonKey(ignore: true)
