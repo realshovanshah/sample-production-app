@@ -53,6 +53,14 @@ class UrlShortenerCubit extends Cubit<UrlShortenerState> {
     emit(UrlShortenerState.idle(recents: state.recents));
   }
 
+  /// Loads the recently shortened urls, if any, to the state.
+  void loadRecentUrls() => _urlShortenerRepository.getShortenedUrls().when(
+        success: (url) => emit(UrlShortenerState.idle(recents: Stack.of(url))),
+        failure: (failure) => emit(
+          UrlShortenerState.failure(recents: Stack(), message: failure.message),
+        ),
+      );
+
   void _handleSuccessResult(ShortenedUrl shortenedUrl) {
     final _urlModel = UrlModel.fromEntity(shortenedUrl);
     final _recents = state.recents.copyWith(_urlModel);
