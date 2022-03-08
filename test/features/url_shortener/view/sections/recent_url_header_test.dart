@@ -3,7 +3,6 @@ import 'package:equatable_stack/equatable_stack.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:link_shortener/app/components/buttons.dart';
 import 'package:link_shortener/features/url_shortener/state/url_shortener_cubit.dart';
-import 'package:link_shortener/features/url_shortener/view/sections/recent_url_list.dart';
 import 'package:link_shortener/features/url_shortener/view/sections/sections.dart';
 import 'package:mocktail/mocktail.dart';
 
