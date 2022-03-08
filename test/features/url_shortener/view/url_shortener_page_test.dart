@@ -48,6 +48,7 @@ void main() {
             const UrlShortenerView(),
             cubit: _cubit,
           );
+          expect(find.byType(RecentUrlHeader), findsOneWidget);
           expect(find.byType(ShortenUrlFooter), findsOneWidget);
           expect(find.byType(RecentUrlList), findsOneWidget);
         },

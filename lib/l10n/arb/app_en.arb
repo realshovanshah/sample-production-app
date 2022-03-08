@@ -16,6 +16,10 @@
     "@recentUrlTitle": {
         "description": "Title of the RecentUrlsPage"
     },
+    "sort": "Sort",
+    "@sort": {
+        "description": "A prompt used for sorting."
+    },
     "emptyRecentList": "No recently shortened URLs.",
     "@emptyRecentList": {
         "description": "Shown when the recent urls list is empty"

@@ -43,6 +43,9 @@ class Stack<E> {
   /// Appends all objects of [iterable] on the top of the stack.
   void pushAll(Iterable<E> iterable) => _list.addAll(iterable);
 
+  /// A [Stack] of current elements in reverse order.
+  Stack<E> reversed() => Stack<E>.of(_list.reversed);
+
   /// Copies the stack with [val] and returns a new stack.
   Stack<E> copyWith(E val) {
     return Stack<E>()

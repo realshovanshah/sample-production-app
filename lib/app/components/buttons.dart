@@ -59,3 +59,38 @@ class CopyActionButton extends StatelessWidget {
     );
   }
 }
+
+/// {@template sort_action_button}
+/// A button with sort icons, that changes when tapped.
+/// {@endtemplate}
+class SortActionButton extends StatelessWidget {
+  /// {@macro sort_action_button}
+  SortActionButton({Key? key, required this.onSort}) : super(key: key);
+
+  /// Callback for when the sort button is tapped.
+  final VoidCallback onSort;
+  final ValueNotifier<_SortDirection> _sortDirectionNotifier =
+      ValueNotifier(_SortDirection.down);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<_SortDirection>(
+      valueListenable: _sortDirectionNotifier,
+      builder: (context, state, _) {
+        return InkWell(
+          onTap: () {
+            _sortDirectionNotifier.value = state == _SortDirection.down
+                ? _SortDirection.up
+                : _SortDirection.down;
+            onSort();
+          },
+          child: state == _SortDirection.down
+              ? const Icon(Icons.arrow_downward)
+              : const Icon(Icons.arrow_upward),
+        );
+      },
+    );
+  }
+}
+
+enum _SortDirection { up, down }

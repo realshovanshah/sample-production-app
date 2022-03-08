@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Stack', () {
-    group('supports value comparision', () {
+    group('supports value comparison', () {
       test('when elements are same, is equal', () {
         final stackA = Stack.of(const [1, 2, 3]);
         final stackB = Stack.of(const [1, 2, 3]);
@@ -13,6 +13,12 @@ void main() {
       test('when elements are different, is not equal', () {
         final stackA = Stack.of(const [1, 2, 4]);
         final stackB = Stack.of(const [1, 2, 3]);
+        expect(stackA, isNot(equals(stackB)));
+      });
+
+      test('elements in different order, not equal', () {
+        final stackA = Stack.of(const [1, 2, 3]);
+        final stackB = Stack.of(const [2, 1, 3]);
         expect(stackA, isNot(equals(stackB)));
       });
     });
@@ -59,6 +65,28 @@ void main() {
       test('does not return the 1st element', () {
         final stack = Stack.of(const [4, 5, 6]);
         expect(stack.peek, isNot(equals(1)));
+      });
+    });
+
+    group('.reversed', () {
+      test('returns reversed stack, correct', () {
+        final stack = Stack.of(const [1, 2, 3]);
+        expect(stack.reversed(), equals(Stack.of(const [3, 2, 1])));
+      });
+
+      test('returns reversed stack, incorrect', () {
+        final stack = Stack.of(const [4, 5, 6]);
+        expect(stack.reversed(), isNot(equals(Stack.of(const [6, 4, 5]))));
+      });
+
+      test('empty stack', () {
+        final stack = Stack<int>.of(const []);
+        expect(stack.reversed(), equals(Stack<int>.of(const [])));
+      });
+
+      test('only 1 element in the stack', () {
+        final stack = Stack.of(const [1]);
+        expect(stack.reversed(), equals(Stack.of(const [1])));
       });
     });
 

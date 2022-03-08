@@ -79,4 +79,40 @@ void main() {
       verify(_mockValueGetter.call).called(1);
     });
   });
+
+  group('SortActionButton', () {
+    test('instantiates', () {
+      expect(SortActionButton(onSort: () {}), isA<SortActionButton>());
+    });
+
+    testWidgets('renders itself correctly', (tester) async {
+      await tester.pumpMaterialWidget(SortActionButton(onSort: () => ''));
+
+      expect(find.byType(InkWell), findsOneWidget);
+      expect(find.byType(Icon), findsOneWidget);
+    });
+
+    testWidgets('calls the correct callback when tapped', (tester) async {
+      final _mockCallback = MockCallback();
+      when(_mockCallback.call).thenReturn(null);
+
+      await tester
+          .pumpMaterialWidget(SortActionButton(onSort: _mockCallback.call));
+      await tester.tap(find.byType(SortActionButton));
+
+      verify(_mockCallback.call).called(1);
+    });
+
+    testWidgets('renders correct icons on state change', (tester) async {
+      await tester.pumpMaterialWidget(SortActionButton(onSort: () => ''));
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.arrow_downward), findsOneWidget);
+      expect(find.byIcon(Icons.arrow_upward), findsNothing);
+
+      await tester.tap(find.byType(SortActionButton));
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.arrow_upward), findsOneWidget);
+      expect(find.byIcon(Icons.arrow_downward), findsNothing);
+    });
+  });
 }

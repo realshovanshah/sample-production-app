@@ -103,6 +103,19 @@ void main() {
     verify(mockIdleCallback.call).called(1);
   });
 
+  test('has a copyWith method', () {
+    final _recents = Stack.of(
+      const [UrlModel(original: 'original.com', shortened: 'org.co')],
+    );
+    final _state = UrlShortenerState.idle(recents: _recents);
+    expect(
+      _state.copyWith(status: UrlShortenerStatus.loading),
+      isA<UrlShortenerState>()
+          .having((p0) => p0.recents, 'recents', _recents)
+          .having((p1) => p1.status, 'status', UrlShortenerStatus.loading),
+    );
+  });
+
   test('support value equality', () {
     final _mockRecents = Stack<UrlModel>.of(
       const [

@@ -51,11 +51,16 @@ void main() {
     });
 
     late Stack<UrlModel> _recents;
+
     setUp(() {
       _recents = Stack.of(
-        const [UrlModel(original: 'original', shortened: 'shortened')],
+        const [
+          UrlModel(original: 'original', shortened: 'shortened'),
+          UrlModel(original: 'original.com', shortened: 'shortened.co'),
+        ],
       );
     });
+
     group('.urlShortened', () {
       const _mockErrorMsg = 'mock-error-msg';
       blocTest<UrlShortenerCubit, UrlShortenerState>(
@@ -163,6 +168,20 @@ void main() {
         },
         seed: () => UrlShortenerState.success(recents: _recents),
         expect: () => <UrlShortenerState>[],
+      );
+    });
+
+    group('.recentUrlsSorted', () {
+      blocTest<UrlShortenerCubit, UrlShortenerState>(
+        'emits current state with reversed recents',
+        build: () => UrlShortenerCubit(urlShortenerRepository: _repository),
+        act: (cubit) {
+          cubit.recentUrlsSorted();
+        },
+        seed: () => UrlShortenerState.success(recents: _recents),
+        expect: () => <UrlShortenerState>[
+          UrlShortenerState.success(recents: _recents.reversed()),
+        ],
       );
     });
 

@@ -94,6 +94,21 @@ class UrlShortenerState {
     }
   }
 
+  /// The copyWith method.
+  ///
+  /// Note: Should be used with caution as it might result in
+  /// undefined states. Prefer the named constructors in most cases.
+  UrlShortenerState copyWith({
+    Stack<UrlModel>? recents,
+    UrlShortenerStatus? status,
+    String? errorMessage,
+  }) =>
+      UrlShortenerState._(
+        recents: recents ?? this.recents,
+        status: status ?? this.status,
+        errorMessage: errorMessage ?? this.errorMessage,
+      );
+
   /// The toString method.
   @override
   String toString() {

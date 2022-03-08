@@ -37,6 +37,13 @@ class UrlShortenerCubit extends Cubit<UrlShortenerState> {
     );
   }
 
+  /// Reverses the list of recently shortened urls
+  /// while preserving the current state.
+  void recentUrlsSorted() {
+    final _reversedRecents = state.recents.reversed();
+    emit(state.copyWith(recents: _reversedRecents));
+  }
+
   /// Changes the state to [UrlShortenerState.idle]
   /// while retaining data if the url is cleared.
   void urlCleared(String url) {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:link_shortener/features/url_shortener/state/state.dart';
-import 'package:link_shortener/features/url_shortener/view/sections/recent_url_list.dart';
-import 'package:link_shortener/features/url_shortener/view/sections/shornen_url_footer.dart';
-import 'package:link_shortener/l10n/l10n.dart';
+import 'package:link_shortener/features/url_shortener/view/sections/sections.dart';
 import 'package:url_shortener_repository/url_shortener_repository.dart';
 
 /// {@template link_shortener_page}
@@ -35,7 +33,6 @@ class UrlShortenerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -50,15 +47,12 @@ class UrlShortenerView extends StatelessWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
+          children: const [
             Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                l10n.recentUrlTitle,
-                style: Theme.of(context).textTheme.headline6,
-              ),
+              padding: EdgeInsets.all(16),
+              child: RecentUrlHeader(),
             ),
-            const Expanded(
+            Expanded(
               child: RecentUrlList(),
             ),
           ],
