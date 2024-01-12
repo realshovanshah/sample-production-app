@@ -13,6 +13,7 @@ A simple link shortener app. A novel [equatable-stack](https://github.com/realsh
 
 - [x] The user can type the website URL to shorten them using the given [service][link_shortener_url].
 - [x] A list with the recently shortened links/aliases.
+- [x] Caching and sorting implementation can also be found in their respective branches.
 
 ## Dependencies
 
