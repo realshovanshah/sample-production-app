@@ -5,7 +5,7 @@
 [![License: MIT][license_badge]][license_link]
 [![Commitizen friendly][commitizen_friendly_badge]][commitizen_friendly_link]
 
-A simple link shortener app.
+A simple link shortener app. A novel [equatable-stack](https://github.com/realshovanshah/equatable-stack) library was born out of this project.
 
 ---
 
