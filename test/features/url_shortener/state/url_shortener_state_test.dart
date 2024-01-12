@@ -1,8 +1,8 @@
 import 'package:equatable_stack/equatable_stack.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:link_shortener/features/url_shortener/models/url_model.dart';
 import 'package:link_shortener/features/url_shortener/state/state.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:url_shortener_api/url_shortener_api.dart';
 
 class MockCallback extends Mock {
   void call();

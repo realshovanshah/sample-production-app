@@ -42,4 +42,12 @@ class FakeUrlShortenerRepositoryImpl implements UrlShortenerRepository {
       () => const Result.success(_shortenedUrlModel),
     );
   }
+
+  @override
+  AllUrlResult getShortenedUrls() {
+    Future.delayed(Duration(seconds: _delay), () {});
+    return const Result.success(
+      [UrlModel(original: _originalUrl, shortened: _shortUrl)],
+    );
+  }
 }

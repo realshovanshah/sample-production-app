@@ -1,2 +1,1 @@
-export 'original_url.dart';
-export 'shortened_url.dart';
+export 'url_model.dart';

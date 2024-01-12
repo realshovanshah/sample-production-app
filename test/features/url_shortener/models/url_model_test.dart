@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:link_shortener/features/url_shortener/models/models.dart';
 import 'package:url_shortener_api/url_shortener_api.dart';
 
 void main() {

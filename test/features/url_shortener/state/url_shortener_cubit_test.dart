@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:equatable_stack/equatable_stack.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:link_shortener/features/url_shortener/models/url_model.dart';
 import 'package:link_shortener/features/url_shortener/state/state.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:url_shortener_api/url_shortener_api.dart';
@@ -18,6 +17,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(const OriginalUrl(url: 'any-url'));
   });
+
   group('UrlShortenerCubit', () {
     late UrlShortenerRepository _repository;
     const _shortenedUrlModel = ShortenedUrl(
@@ -56,6 +56,31 @@ void main() {
         const [UrlModel(original: 'original', shortened: 'shortened')],
       );
     });
+
+    group('loads cached urls', () {
+      const _cachedUrls = [
+        UrlModel(original: 'original', shortened: 'shortened')
+      ];
+
+      // todo: code review, not throwing any state (unexpected behavior)
+      blocTest<UrlShortenerCubit, UrlShortenerState>(
+        'emits success state when cached urls are loaded',
+        setUp: () {
+          when(_repository.getShortenedUrls).thenReturn(
+            const Result<UrlShortenerFailure, Iterable<UrlModel>>.success(
+              _cachedUrls,
+            ),
+          );
+        },
+        build: () => UrlShortenerCubit(urlShortenerRepository: _repository),
+        act: (cubit) => cubit.loadRecentUrls(),
+        expect: () => [
+          UrlShortenerState.idle(recents: _recents),
+        ],
+        verify: (cubit) => verify(_repository.getShortenedUrls).called(1),
+      );
+    });
+
     group('.urlShortened', () {
       const _mockErrorMsg = 'mock-error-msg';
       blocTest<UrlShortenerCubit, UrlShortenerState>(

@@ -1,17 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:url_shortener_api/src/exceptions/exceptions.dart';
-import 'package:url_shortener_api/src/models/models.dart';
-import 'package:url_shortener_api/src/types/types.dart';
+import 'package:url_shortener_api/url_shortener_api.dart';
 
 /// {@template url_shortener_api}
 /// A dart api client for the NU Link Shortener API.
 /// Throws one of [NetworkException], [InvalidRequestException] or
 /// [BadResponseException] if the response is not successful.
 /// {@endtemplate}
-class UrlShortenerApi {
+class UrlShortenerRemoteApi {
   /// {@macro url_shortener_api}
-  UrlShortenerApi({Dio? dio})
+  UrlShortenerRemoteApi({Dio? dio})
       : _dio = dio ?? Dio()
           ..options = BaseOptions(
             baseUrl: _kUrlBase,
